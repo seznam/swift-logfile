@@ -89,9 +89,7 @@ public class LogFile {
 
 		var msg = message
 
-		let chars = msg.characters
-		let lastChar = chars[chars.index(before: chars.endIndex)]
-		if !newLines.contains(lastChar) {
+		if let lastChar = msg.last, !newLines.contains(lastChar) {
 			msg += "\n"
 		}
 
