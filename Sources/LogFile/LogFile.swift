@@ -4,7 +4,7 @@ public enum LogFileError: Error {
 	case error(detail: String)
 }
 
-public enum LogLevel: Int {
+public enum LogLevel: Int, Comparable {
 	case none = -1
 	case fatal
 	case error
@@ -24,6 +24,10 @@ public enum LogLevel: Int {
 
 	public static func <(lhs: LogLevel, rhs: LogLevel) -> Bool {
 		return lhs.hashValue < rhs.hashValue
+	}
+
+	public static func ==(lhs: LogLevel, rhs: LogLevel) -> Bool {
+		return lhs.hashValue == rhs.hashValue
 	}
 }
 
@@ -75,15 +79,7 @@ public class LogFile {
 	}
 
 	private func put(_ message: String,_ level: LogLevel,_ tag: String?) -> Void {
-		if fd == nil {
-			return
-		}
-
-		if self.level < level {
-			return
-		}
-
-		if message.isEmpty {
+		guard fd != nil, self.level >= level, !message.isEmpty else {
 			return
 		}
 
@@ -93,9 +89,7 @@ public class LogFile {
 			msg += "\n"
 		}
 
-		let t: String = tag ?? self.tag
-
-		fputs("[\(formatter.string(from: Date()))] [\(pid)] [\(t)] [\(level)] \(msg)", fd)
+		fputs("[\(formatter.string(from: Date()))] [\(pid)] [\(tag ?? self.tag)] [\(level)] \(msg)", fd)
 
 		fflush(fd)
 	}
