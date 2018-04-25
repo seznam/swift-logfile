@@ -8,6 +8,8 @@ let package = Package(
 		.library(name: "LogFile", targets: ["LogFile"])
 	],
 	targets: [
-		.target(name: "LogFile")
-	]
+		.target(name: "LogFile"),
+		.testTarget(name: "LogFileTests", dependencies: ["LogFile"])
+	],
+	swiftLanguageVersions: [4]
 )
