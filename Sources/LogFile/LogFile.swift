@@ -99,7 +99,7 @@ public class LogFile {
 	}
 
 	private func put(_ message: String,_ level: LogLevel,_ tag: String?) -> Void {
-		guard fd != nil, self.level >= level, !message.isEmpty else {
+		guard fd != nil, self.level.rawValue >= level.rawValue, !message.isEmpty else {
 			return
 		}
 
