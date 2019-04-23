@@ -43,11 +43,11 @@ public enum LogLevel: Int, Comparable {
 	}
 
 	public static func <(lhs: LogLevel, rhs: LogLevel) -> Bool {
-		return lhs.hashValue < rhs.hashValue
+		return lhs.rawValue < rhs.rawValue
 	}
 
 	public static func ==(lhs: LogLevel, rhs: LogLevel) -> Bool {
-		return lhs.hashValue == rhs.hashValue
+		return lhs.rawValue == rhs.rawValue
 	}
 }
 
@@ -99,7 +99,7 @@ public class LogFile {
 	}
 
 	private func put(_ message: String,_ level: LogLevel,_ tag: String?) -> Void {
-		guard fd != nil, self.level.rawValue >= level.rawValue, !message.isEmpty else {
+		guard fd != nil, self.level >= level, !message.isEmpty else {
 			return
 		}
 
