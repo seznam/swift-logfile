@@ -24,7 +24,17 @@ public enum LogFileError: Error {
 	case error(detail: String)
 }
 
-public enum LogLevel: Int, Comparable {
+extension RawRepresentable where RawValue: Comparable {
+    public static func <(lhs: Self, rhs: Self) -> Bool {
+        return lhs.rawValue < rhs.rawValue
+    }
+    
+    public static func ==(lhs: Self, rhs: Self) -> Bool {
+        return lhs.rawValue == rhs.rawValue
+    }
+}
+
+public enum LogLevel: Int, Comparable, CaseIterable {
 	case none = -1
 	case fatal
 	case error
@@ -34,20 +44,7 @@ public enum LogLevel: Int, Comparable {
 	case debug
 
 	static func fromString(_ string: String) -> LogLevel? {
-		var i = 0
-		while let item = LogLevel(rawValue: i) {
-			if String(describing: item) == string { return item }
-			i += 1
-		}
-		return nil
-	}
-
-	public static func <(lhs: LogLevel, rhs: LogLevel) -> Bool {
-		return lhs.rawValue < rhs.rawValue
-	}
-
-	public static func ==(lhs: LogLevel, rhs: LogLevel) -> Bool {
-		return lhs.rawValue == rhs.rawValue
+        return allCases.dropFirst().first(where: { String(describing: $0) == string })
 	}
 }
 
@@ -103,11 +100,13 @@ public class LogFile {
 			return
 		}
 
-		var msg = message
-
-		if let lastChar = msg.last, !newLines.contains(lastChar) {
-			msg += "\n"
-		}
+        let msg = message + {
+            if let lastChar = message.last, !newLines.contains(lastChar) {
+                return "\n"
+            } else {
+                return ""
+            }
+        }()
 
 		fputs("[\(formatter.string(from: Date()))] [\(pid)] [\(tag ?? self.tag)] [\(level)] \(msg)", fd)
 
