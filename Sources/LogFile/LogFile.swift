@@ -43,7 +43,7 @@ public enum LogLevel: Int, Comparable, CaseIterable {
 	case info
 	case debug
 
-	static func fromString(_ string: String) -> LogLevel? {
+    static func fromString(_ string: String) -> LogLevel? {
         return allCases.dropFirst().first(where: { String(describing: $0) == string })
 	}
 }
