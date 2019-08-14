@@ -28,7 +28,7 @@ extension RawRepresentable where RawValue: Comparable {
     public static func <(lhs: Self, rhs: Self) -> Bool {
         return lhs.rawValue < rhs.rawValue
     }
-    
+
     public static func ==(lhs: Self, rhs: Self) -> Bool {
         return lhs.rawValue == rhs.rawValue
     }
@@ -43,8 +43,8 @@ public enum LogLevel: Int, Comparable, CaseIterable {
 	case info
 	case debug
 
-    static func fromString(_ string: String) -> LogLevel? {
-        return allCases.dropFirst().first(where: { String(describing: $0) == string })
+	static func fromString(_ string: String) -> LogLevel? {
+		return allCases.dropFirst().first(where: { String(describing: $0) == string })
 	}
 }
 
