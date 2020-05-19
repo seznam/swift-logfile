@@ -1,4 +1,4 @@
-// swift-tools-version:4.0
+// swift-tools-version:5.2
 
 import PackageDescription
 
@@ -11,5 +11,5 @@ let package = Package(
 		.target(name: "LogFile"),
 		.testTarget(name: "LogFileTests", dependencies: ["LogFile"])
 	],
-	swiftLanguageVersions: [4]
+	swiftLanguageVersions: [.v4, .v4_2, .v5]
 )
